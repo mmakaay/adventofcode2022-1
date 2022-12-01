@@ -1,0 +1,11 @@
+[package]
+name = "aoc2022"
+version = "0.1.0"
+authors = ["Miquel van Smoorenburg <mike@langeraar.net>"]
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+clap = { version = "4.0.29", features = ["derive"] }
+day-01-calorie-counting = { path = "day-01-calorie-counting", version = "0.1.0" }
