@@ -1,5 +1,7 @@
 # Advent of Code 2022
 
+I'm participating in the [adventofcode.com/2022](https://adventofcode.com/2022) challenge.
+
 Each day is a seperate crate in a workspace. The main crate is a CLI application
 that links with all other crates:
 
