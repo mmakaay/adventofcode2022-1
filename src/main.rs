@@ -45,32 +45,23 @@ fn main() {
 
     for (day, dir, part1, part2) in DAYS {
         if opts.day == 0 || opts.day == *day {
-            println!("{}: {}", &dir[..6], &dir[7..]);
+            eprintln!("{}: {}", &dir[..6], &dir[7..]);
             let file = format!("{}/input/{}", dir, opts.input);
             let input = read_to_string(&file).expect(&file);
-            let start = Instant::now();
-            let mut tmp = start;
-            if opts.part.is_none() || opts.part == Some(1) {
-                println!("part1: == start ==");
-                part1(&input);
-                if opts.part.is_none() {
-                    tmp = Instant::now();
-                    println!("part1: took {:?}", tmp.duration_since(start));
+            for part in 1..=2 {
+                if opts.part.is_none() || opts.part == Some(part) {
+                    eprintln!("part{}: == start ==", part);
+                    let start = Instant::now();
+                    if part == 1 { part1(&input) } else { part2(&input) }
+                    let elapsed = start.elapsed();
+                    eprintln!("part{}: took {:?}", part, elapsed);
+                    tot_elapsed += elapsed;
                 }
             }
-            if opts.part.is_none() || opts.part == Some(2) {
-                println!("part2: == start ==");
-                part2(&input);
-                if opts.part.is_none() {
-                    println!("part2: took {:?}", tmp.elapsed());
-                }
-            }
-            let elapsed = start.elapsed();
-            println!("{}: total: {:?}", &dir[..6], elapsed);
-            tot_elapsed += elapsed;
         }
     }
+
     if opts.day == 0 {
-        println!("\nTotal time elapsed: {:?}", tot_elapsed);
+        eprintln!("\nTotal time: {:?}", tot_elapsed);
     }
 }
