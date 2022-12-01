@@ -2,38 +2,9 @@ use std::fs::read_to_string;
 use std::time::{Duration, Instant};
 use clap::Parser;
 
-macro_rules! days {
-    ($({ $daynum:expr, $day:tt : $name:expr }),+, $opts:expr, $elapsed:expr) => {
-        $(
-            let daystr = stringify!($day).replace("_", "-");
-            if $opts.day == 0 || $opts.day == $daynum {
-                println!("{}: {}", &daystr[..6], $name);
-                let file = format!("{}/input/{}", daystr, $opts.input);
-                let input = read_to_string(&file).expect(&file);
-                let start = Instant::now();
-                let mut tmp = start;
-                if $opts.part.is_none() || $opts.part == Some(1) {
-                    println!("part1: == start ==");
-                    $day::part1(&input);
-                    if $opts.part.is_none() {
-                        tmp = Instant::now();
-                        println!("part1: duration: {:?}", tmp.duration_since(start));
-                    }
-                }
-                if $opts.part.is_none() || $opts.part == Some(2) {
-                    println!("part2: == start ==");
-                    $day::part2(&input);
-                    if $opts.part.is_none() {
-                        println!("part2: duration: {:?}", tmp.elapsed());
-                    }
-                }
-                let elapsed = start.elapsed();
-                println!("{}: total duration: {:?}", &daystr[..6], elapsed);
-                $elapsed += elapsed;
-            }
-        )+
-    };
-}
+const DAYS: &'static [(u32, &str, fn(&str), fn(&str))] = &[
+    ( 1, "day-01-calorie-counting", day_01::part1, day_01::part2 ),
+];
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -70,13 +41,36 @@ fn part_parser(s: &str) -> Result<u32, String> {
 
 fn main() {
     let opts = Options::parse();
-    let mut elapsed = Duration::from_secs(0);
+    let mut tot_elapsed = Duration::from_secs(0);
 
-    days! {
-        { 1, day_01_calorie_counting: "Calorie Counting" },
-        opts, elapsed
+    for (day, dir, part1, part2) in DAYS {
+        if opts.day == 0 || opts.day == *day {
+            println!("{}: {}", &dir[..6], &dir[7..]);
+            let file = format!("{}/input/{}", dir, opts.input);
+            let input = read_to_string(&file).expect(&file);
+            let start = Instant::now();
+            let mut tmp = start;
+            if opts.part.is_none() || opts.part == Some(1) {
+                println!("part1: == start ==");
+                part1(&input);
+                if opts.part.is_none() {
+                    tmp = Instant::now();
+                    println!("part1: took {:?}", tmp.duration_since(start));
+                }
+            }
+            if opts.part.is_none() || opts.part == Some(2) {
+                println!("part2: == start ==");
+                part2(&input);
+                if opts.part.is_none() {
+                    println!("part2: took {:?}", tmp.elapsed());
+                }
+            }
+            let elapsed = start.elapsed();
+            println!("{}: total: {:?}", &dir[..6], elapsed);
+            tot_elapsed += elapsed;
+        }
     }
     if opts.day == 0 {
-        println!("\nTotal time elapsed: {:?}", elapsed);
+        println!("\nTotal time elapsed: {:?}", tot_elapsed);
     }
 }
