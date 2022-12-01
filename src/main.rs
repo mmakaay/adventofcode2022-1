@@ -2,8 +2,8 @@ use std::fs::read_to_string;
 use std::time::{Duration, Instant};
 use clap::Parser;
 
-const DAYS: &'static [(u32, &str, fn(&str), fn(&str))] = &[
-    ( 1, "day-01-calorie-counting", day_01::part1, day_01::part2 ),
+const DAYS: &'static [(u32, &str, u32, fn(&str), fn(&str))] = &[
+    ( 1, "day-01-calorie-counting", 2, day_01::part1, day_01::part2 ),
 ];
 
 #[derive(Parser)]
@@ -43,18 +43,26 @@ fn main() {
     let opts = Options::parse();
     let mut tot_elapsed = Duration::from_secs(0);
 
-    for (day, dir, part1, part2) in DAYS {
+    for (day, dir, nparts, part1, part2) in DAYS {
         if opts.day == 0 || opts.day == *day {
             eprintln!("{}: {}", &dir[..6], &dir[7..]);
             let file = format!("{}/input/{}", dir, opts.input);
             let input = read_to_string(&file).expect(&file);
-            for part in 1..=2 {
-                if opts.part.is_none() || opts.part == Some(part) {
-                    eprintln!("part{}: == start ==", part);
+            for part in 1 ..= *nparts {
+                if opts.part.is_none() || opts.part == Some(part) || *nparts == 1 {
+                    if *nparts == 1 {
+                        eprintln!(" == start ==");
+                    } else {
+                        eprintln!("part{}: == start ==", part);
+                    }
                     let start = Instant::now();
                     if part == 1 { part1(&input) } else { part2(&input) }
                     let elapsed = start.elapsed();
-                    eprintln!("part{}: took {:?}", part, elapsed);
+                    if *nparts == 1 {
+                        eprintln!("took {:?}", elapsed);
+                    } else {
+                        eprintln!("part{}: took {:?}", part, elapsed);
+                    }
                     tot_elapsed += elapsed;
                 }
             }

@@ -2,7 +2,7 @@ fn calorie_list(input: &str) -> Vec<u64> {
     let mut cals = input.split("\n\n")
         .map(|grp| grp.split("\n").filter_map(|i| i.parse::<u64>().ok()).sum::<u64>())
         .collect::<Vec<_>>();
-    cals.sort();
+    cals.sort_unstable();
     cals
 }
 
