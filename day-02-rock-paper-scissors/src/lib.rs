@@ -36,7 +36,7 @@ pub fn part2(input: &str) {
 // Table driven solution.
 pub fn part1a(input: &str) {
     let table = [ 4, 8, 3, 1, 5, 7, 7, 2, 6 ];
-    let s = input.trim().split("\n").map(|l| l.as_bytes()).map(|b|
+    let s = input.as_bytes().chunks(4).map(|b|
         table[((b[0] - b'A') * 3 + b[2] - b'X') as usize]).sum::<u64>();
     println!("part1: score {}", s);
 }
@@ -44,7 +44,7 @@ pub fn part1a(input: &str) {
 // Table driven solution.
 pub fn part2a(input: &str) {
     let table = [ 3, 4, 8, 1, 5, 9, 2, 6, 7 ];
-    let s = input.trim().split("\n").map(|l| l.as_bytes()).map(|b|
+    let s = input.as_bytes().chunks(4).map(|b|
         table[((b[0] - b'A') * 3 + b[2] - b'X') as usize]).sum::<u64>();
     println!("part2: score {}", s);
 }
