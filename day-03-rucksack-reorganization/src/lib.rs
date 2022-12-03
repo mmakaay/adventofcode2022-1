@@ -24,5 +24,34 @@ pub fn part1(input: &str) {
     println!("part1: {}", r);
 }
 
-pub fn part2(_input: &str) {
+pub fn part2(input: &str) {
+    let mut table = [0u8; 52];
+    let r = input
+        .trim()
+        .as_bytes()
+        .split(|b| *b == b'\n')
+        .enumerate()
+        .map(|(i, line)| {
+            let g = i % 3;
+
+            // First of the group: zero the table.
+            if g == 0 {
+                table[0..52].fill(0);
+            }
+
+            // Update item table.
+            for i in 0 .. line.len() {
+                let p = index(line[i]);
+                table[p] |= 1 << g;
+            }
+
+            if g == 2 {
+                // Last of the group: find item common in all 3.
+                (0..52).find_map(|i| (table[i] == 7).then(|| i)).unwrap() + 1
+            } else {
+                0
+            }
+        })
+        .sum::<usize>();
+    println!("part2: {}", r);
 }
