@@ -5,6 +5,7 @@ use clap::Parser;
 const DAYS: &'static [(u32, &str, u32, fn(&str), fn(&str))] = &[
     ( 1, "day-01-calorie-counting", 2, day_01::part1, day_01::part2 ),
     ( 2, "day-02-rock-paper-scissors", 2, day_02::part1a, day_02::part2a ),
+    ( 3, "day-03-rucksack-reorganization", 1, day_03::part1, day_03::part2 ),
 ];
 
 #[derive(Parser)]
