@@ -10,6 +10,9 @@ Solution: as the puzzle input shows that all numbers are < 100, we can
 put the ranges into 128-bit integers and use AND to check. This will 
 probably not scale for part 2, but we'll see.
 
+(But see below: turns out bitbanging was not needed, so the current
+ solution looks a bit different).
+
 Runtime: 233.928µs. After setting `RUSTFLAGS='-C target-cpu=native'`,
 220.074µs. It helps, but not a lot.
 
@@ -41,4 +44,12 @@ Runtime after optimizations: 52.811µs.
 Interesting to note, with 1000 lines of input the difference between
 `input.lines()` and `input.trim().split("\n")` is about 28µs.
 That is a lot!
+
+### More optimizations.
+
+I suspected that in part two we'd have to calculate the overlap on lots
+of different ranges, so I went with the bitsetting method. Turns out
+that that is not needed at all, we're only calculating the overlap
+of two ranges. So we can take out the bitsetting part and just
+compare ranges - that shaves off another 4µs, runtime now down to 24.407µs.
 

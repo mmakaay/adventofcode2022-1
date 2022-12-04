@@ -1,5 +1,5 @@
 
-fn parse_range1(range: &str) -> u128 {
+fn parse_range(range: &str) -> u128 {
     let (l, r) = range.split_once('-').unwrap();
     let (l, r) = (l.parse::<u8>().unwrap(), r.parse::<u8>().unwrap());
     (1u128 << (r + 1)) - (1u128 << l)
@@ -11,8 +11,8 @@ pub fn part1(input: &str) {
         .split("\n")
         .map(|line| {
             let (l, r) = line.split_once(',').unwrap();
-            let l = parse_range1(l);
-            let r = parse_range1(r);
+            let l = parse_range(l);
+            let r = parse_range(r);
             ((l & r) == l || (l & r) == r) as u32
         })
         .sum::<u32>();
@@ -25,8 +25,8 @@ pub fn part2(input: &str) {
         .split("\n")
         .map(|line| {
             let (l, r) = line.split_once(',').unwrap();
-            let l = parse_range1(l);
-            let r = parse_range1(r);
+            let l = parse_range(l);
+            let r = parse_range(r);
             ((l & r) > 0) as u32
         })
         .sum::<u32>();
@@ -43,21 +43,17 @@ fn next_num(r: &[u8], idx: &mut usize) -> u8 {
     n
 }
 
-fn parse_range(range: &[u8], idx: &mut usize) -> u128 {
-    let l = next_num(range, idx);
-    let r = next_num(range, idx);
-    (1u128 << (r + 1)) - (1u128 << l)
-}
-
 pub fn part1_2(input: &str) {
     let mut p1 = 0u32;
     let mut p2 = 0u32;
     for line in input.trim().as_bytes().split(|b| *b == b'\n') {
         let mut idx = 0;
-        let l = parse_range(line, &mut idx);
-        let r = parse_range(line, &mut idx);
-        p1 += ((l & r) == l || (l & r) == r) as u32;
-        p2 += ((l & r) > 0) as u32;
+        let l1 = next_num(line, &mut idx);
+        let r1 = next_num(line, &mut idx);
+        let l2 = next_num(line, &mut idx);
+        let r2 = next_num(line, &mut idx);
+        p1 += ((l1 >= r1 && r1 <= l1) || (r1 >= l1 && l1 <= r1)) as u32;
+        p2 += (l2 <= r1 && l1 <= r2) as u32;
     }
     println!("part1: {}", p1);
     println!("part2: {}", p2);
