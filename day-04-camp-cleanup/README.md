@@ -15,6 +15,12 @@ Runtime: 233.928µs. After setting `RUSTFLAGS='-C target-cpu=native'`,
 
 ### Part 2.
 
+Well that was easy. It's the slightly simpler version of part1. Just
+checking for any overlap, not if one range is completely contained
+by the other.
+
+Runtime: 213.215µs.
+
 ### Optimization.
 
 TBD

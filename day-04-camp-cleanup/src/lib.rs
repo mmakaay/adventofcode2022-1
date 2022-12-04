@@ -25,5 +25,18 @@ pub fn part1(input: &str) {
 }
 
 
-pub fn part2(_input: &str) {
+pub fn part2(input: &str) {
+    let r = input
+        .trim()
+        .split("\n")
+        .map(|line| {
+            let mut ranges = [0u128; 2];
+            line
+                .split(",")
+                .enumerate()
+                .for_each(|(i, r)| parse_range(r, &mut ranges[i]));
+            ((ranges[0] & ranges[1]) != 0) as u32
+        })
+        .sum::<u32>();
+    println!("part2: {}", r);
 }
