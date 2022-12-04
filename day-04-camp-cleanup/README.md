@@ -51,5 +51,7 @@ I suspected that in part two we'd have to calculate the overlap on lots
 of different ranges, so I went with the bitsetting method. Turns out
 that that is not needed at all, we're only calculating the overlap
 of two ranges. So we can take out the bitsetting part and just
-compare ranges - that shaves off another 4µs, runtime now down to 24.407µs.
+compare ranges. I thought it would be faster, but the runtime is the
+exact same. So I'm reverting that change and keep the bits ANDing solution
+because it's more interesting :).
 
