@@ -34,7 +34,7 @@ impl Cmd {
 struct Stacks(Vec<Vec<u8>>);
 
 impl Stacks {
-    fn cratemover_9000<'a>(&mut self, cmds: &[Cmd]) {
+    fn cratemover_9000(&mut self, cmds: &[Cmd]) {
         for cmd in cmds {
             for _ in 0 .. cmd.num {
                 let c = self.0[cmd.from - 1].pop().unwrap();
@@ -43,7 +43,7 @@ impl Stacks {
         }
     }
 
-    fn cratemover_9001<'a>(&mut self, cmds: &[Cmd]) {
+    fn cratemover_9001(&mut self, cmds: &[Cmd]) {
         for cmd in cmds {
             let mut tmp = std::mem::replace(&mut self.0[cmd.to - 1], Vec::new());
             let i = self.0[cmd.from-1].len() - cmd.num;
